@@ -1,0 +1,44 @@
+package com.williammedina.reply_service.domain.reply.dto;
+
+import com.williammedina.reply_service.domain.reply.entity.ReplyEntity;
+import io.swagger.v3.oas.annotations.media.Schema;
+
+import java.time.LocalDateTime;
+
+@Schema(description = "Respuesta visible dentro del detalle de un tópico.")
+public record ReplyDTO(
+
+        @Schema(description = "ID único de la respuesta", example = "25")
+        Long id,
+
+        @Schema(description = "ID del tópico asociado a la respuesta", example = "5")
+        Long topicId,
+
+        @Schema(description = "Contenido de la respuesta", example = "Puedes habilitar los endpoints asegurándote de usar @RestController y de tener bien configurado el archivo application.properties..")
+        String content,
+
+        @Schema(description = "Autor de la respuesta", example = "Alejandro Cristiano")
+        UserDTO author,
+
+        @Schema(description = "Indica si esta respuesta fue marcada como solución", example = "true")
+        Boolean solution,
+
+        @Schema(description = "Fecha en que se creó la respuesta", example = "2025-05-31T16:00:00")
+        LocalDateTime createdAt,
+
+        @Schema(description = "Fecha de la última edición", example = "2025-07-01T08:30:00")
+        LocalDateTime updatedAt
+) {
+    public static ReplyDTO fromEntity(ReplyEntity reply, UserDTO author) {
+
+        return new ReplyDTO(
+                reply.getId(),
+                reply.getTopicId(),
+                reply.getContent(),
+                author,
+                reply.getSolution(),
+                reply.getCreatedAt(),
+                reply.getUpdatedAt()
+        );
+    }
+}

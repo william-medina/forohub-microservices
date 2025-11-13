@@ -1,0 +1,26 @@
+server:
+  port: 8888
+
+spring:
+  application:
+    name: config-server
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:default}
+  cloud:
+    config:
+      server:
+        git:
+          uri: ${GIT_URI}
+          default-label: main
+          clone-on-start: true
+          username: ${GIT_USERNAME}
+          password: ${GIT_TOKEN}
+          search-paths: forohub-microservice/*
+
+eureka:
+  instance:
+    prefer-ip-address: true
+    instance-id: "${spring.application.name}:${random.value}"
+  client:
+    service-url:
+      defaultZone: ${EUREKA_URL}

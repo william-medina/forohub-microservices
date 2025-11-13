@@ -1,0 +1,12 @@
+FROM eclipse-temurin:21-jdk-alpine
+VOLUME /tmp
+COPY target/topic-read-service-0.0.1-SNAPSHOT.jar app.jar
+ENV SPRING_PROFILES_ACTIVE=null
+ENV EUREKA_URL=null
+ENV CONFIG_SERVER_HOST=null
+ENV KAFKA_SERVERS=null
+ENV MONGO_HOST=null
+ENV MONGO_PORT=null
+ENV MONGO_TOPIC_READ_SERVICE=null
+ENV MONGO_TOPIC_READ_PASSWORD=null
+ENTRYPOINT ["java","-jar","/app.jar"]

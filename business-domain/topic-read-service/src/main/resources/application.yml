@@ -1,0 +1,52 @@
+server:
+  port: 8088
+
+spring:
+  application:
+    name: topic-read-service
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:default}
+  data:
+    mongodb:
+      host: ${db.host}
+      port: ${db.port}
+      database: ${db.database}
+      username: ${db.username}
+      password: ${db.password}
+  config:
+    import: "optional:configserver:${CONFIG_SERVER_HOST}"
+  cloud:
+    function:
+      definition: userEvents;topicEvents;replyEvents;topicFollowEvents
+    stream:
+      kafka:
+        binder:
+          brokers: ${kafka.bootstrap-servers}
+      bindings:
+        userEvents-in-0:
+          destination: user-events
+          content-type: application/json
+          group: topic-read-service-user-group
+        topicEvents-in-0:
+          destination: topic-events
+          content-type: application/json
+          group: topic-read-service-topic-group
+        replyEvents-in-0:
+          destination: reply-events
+          content-type: application/json
+          group: topic-read-service-reply-group
+        topicFollowEvents-in-0:
+          destination: topic-follow-events
+          content-type: application/json
+          group: topic-read-service-topic-follow-group
+
+
+eureka:
+  instance:
+    prefer-ip-address: true
+    instance-id: "${spring.application.name}:${random.value}"
+  client:
+    service-url:
+      defaultZone: ${eureka.url}
+
+

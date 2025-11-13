@@ -1,0 +1,78 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: api-gateway
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:default}
+  config:
+    import: "optional:configserver:${CONFIG_SERVER_HOST}"
+  cloud:
+    gateway:
+      server:
+        webflux:
+          httpclient:
+            wiretap: true
+          forwarded:
+            enabled: true
+          filter:
+            remove-hop-by-hop-headers: false
+          routes:
+            - id: user-service
+              uri: lb://user-service
+              predicates:
+                - Path=/api/auth/**
+              filters:
+                - StripPrefix=1
+
+            - id: topic-service
+              uri: lb://topic-service
+              predicates:
+                - Path=/api/topic/**
+                - Method=POST,PUT,PATCH,DELETE
+              filters:
+                - StripPrefix=1
+
+            - id: reply-service
+              uri: lb://reply-service
+              predicates:
+                - Path=/api/reply/**
+              filters:
+                - StripPrefix=1
+
+            - id: course-service
+              uri: lb://course-service
+              predicates:
+                - Path=/api/course/**
+              filters:
+                - StripPrefix=1
+
+            - id: notification-service
+              uri: lb://notification-service
+              predicates:
+                - Path=/api/notify/**
+              filters:
+                - StripPrefix=1
+
+            - id: topic-read-service
+              uri: lb://topic-read-service
+              predicates:
+                - Path=/api/topic/**  # Path=/topic-read/**
+                - Method=GET
+              filters:
+                - StripPrefix=1
+
+eureka:
+  instance:
+    prefer-ip-address: true
+    instance-id: "${spring.application.name}:${random.value}"
+  client:
+    service-url:
+      defaultZone: ${eureka.url}
+
+app:
+  auth:
+    issuer-uri: ${AUTH_SERVER_ISSUER_URI}
+  frontend:
+    url: ${FRONTEND_URL}

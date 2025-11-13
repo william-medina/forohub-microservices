@@ -1,0 +1,36 @@
+server:
+  port: 9000
+
+spring:
+  application:
+    name: auth-server
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:default}
+  datasource:
+    url: ${db.url}
+    username: ${db.username}
+    password: ${db.password}
+  jpa:
+    database-platform: org.hibernate.dialect.MySQLDialect
+  config:
+    import: "optional:configserver:${CONFIG_SERVER_HOST}"
+
+eureka:
+  instance:
+    prefer-ip-address: true
+    instance-id: "${spring.application.name}:${random.value}"
+  client:
+    service-url:
+      defaultZone: ${eureka.url}
+
+app:
+  client:
+    id: ${AUTH_CLIENT_ID}
+    secret: ${AUTH_CLIENT_SECRET}
+    redirect-uri: ${AUTH_REDIRECT_URI}
+  auth:
+    issuer-uri: ${AUTH_SERVER_ISSUER_URI}
+  frontend:
+    url: ${FRONTEND_URL}
+
+

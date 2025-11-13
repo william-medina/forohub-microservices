@@ -1,0 +1,1637 @@
+{
+	"info": {
+		"_postman_id": "e2d2cefd-dfd6-472f-9cc0-4fc55f953add",
+		"name": "ForoHub Microservice",
+		"description": "Esta colección describe la gestión de usuarios, tópicos, respuestas, notificaciones y cursos en la API de ForoHub. Todos los endpoints comienzan con el prefijo `/api`.\n\n- **AUTH**: Permite crear una cuenta de usuario, iniciar sesión, actualizar contraseñas y obtener los detalles del usuario autenticado.\n    \n- **TOPIC**: Facilita la creación, obtención, actualización, seguimiento y eliminación (de manera lógica) de tópicos. También permite a los usuarios seguir o dejar de seguir tópicos específicos.\n    \n- **RESPONSE**: Gestiona la creación, obtención, actualización y eliminación (de manera lógica) de respuestas a los tópicos, así como la posibilidad de marcar o desmarcar una respuesta como solución.\n    \n- **NOTIFY**: Permite obtener las notificaciones del usuario, marcarlas como leídas o eliminar notificaciones específicas.\n    \n- **COURSE**: Ofrece información sobre los cursos disponibles en la plataforma",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "32430173"
+	},
+	"item": [
+		{
+			"name": "USER SERVICE",
+			"item": [
+				{
+					"name": "INTERNAL",
+					"item": [
+						{
+							"name": "[INTERNAL] - Get User By Id",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{forohub_user_service_url}}/internal/auth/1",
+									"host": [
+										"{{forohub_user_service_url}}"
+									],
+									"path": [
+										"internal",
+										"auth",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "[INTERNAL] - Get Users By Ids",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{forohub_user_service_url}}/internal/auth/batch?ids=1,2,3,4,5",
+									"host": [
+										"{{forohub_user_service_url}}"
+									],
+									"path": [
+										"internal",
+										"auth",
+										"batch"
+									],
+									"query": [
+										{
+											"key": "ids",
+											"value": "1,2,3,4,5"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "[INTERNAL] - Validate Credentials",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"username\": \"William Medina\",\r\n    \"password\": \"12345678\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{forohub_user_service_url}}/internal/auth/validate-credentials",
+									"host": [
+										"{{forohub_user_service_url}}"
+									],
+									"path": [
+										"internal",
+										"auth",
+										"validate-credentials"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"description": "Estos endpoints están destinados exclusivamente para la comunicación interna entre microservicios.  \n  \nNo son accesibles desde el cliente externo ni desde el frontend.  \n  \nSe utilizan para sincronización de datos, validaciones internas y comunicación a través de eventos o peticiones directas entre servicios del ecosistema."
+				},
+				{
+					"name": "AUTH - Create User",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"William medina\",\r\n    \"email\": \"william@mail.com\",\r\n    \"password\": \"12345678\",\r\n    \"password_confirmation\": \"12345678\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{forohub_api_gateway_url}}/auth/create-account",
+							"host": [
+								"{{forohub_api_gateway_url}}"
+							],
+							"path": [
+								"auth",
+								"create-account"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AUTH - Forgot Password",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"william@mail.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{forohub_api_gateway_url}}/auth/forgot-password",
+							"host": [
+								"{{forohub_api_gateway_url}}"
+							],
+							"path": [
+								"auth",
+								"forgot-password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AUTH - Request code",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"william@mail.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{forohub_api_gateway_url}}/auth/request-code",
+							"host": [
+								"{{forohub_api_gateway_url}}"
+							],
+							"path": [
+								"auth",
+								"request-code"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AUTH - Confirm Account",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{forohub_api_gateway_url}}/auth/confirm-account/7d578792-0f7f-4c6d-bc30-8a85bc349b38",
+							"host": [
+								"{{forohub_api_gateway_url}}"
+							],
+							"path": [
+								"auth",
+								"confirm-account",
+								"7d578792-0f7f-4c6d-bc30-8a85bc349b38"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AUTH - Update Password With Token",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"password\": \"123456789\",\r\n    \"password_confirmation\": \"123456789\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{forohub_api_gateway_url}}/auth/update-password/0c82ff0d-1d14-4f87-b0b9-ad2ebb03754c",
+							"host": [
+								"{{forohub_api_gateway_url}}"
+							],
+							"path": [
+								"auth",
+								"update-password",
+								"0c82ff0d-1d14-4f87-b0b9-ad2ebb03754c"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AUTH - Update Current User Password",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJraWQiOiJlNDRkMWQzOS03ODQ5LTRiZGMtYmIwMS1iOTIxZGUwZDM3NWIiLCJhbGciOiJSUzI1NiJ9.eyJvd25lciI6IkZvcm9IdWIiLCJzdWIiOiJ7cHJvZmlsZT1VU0VSLCBpZD0xLCB1c2VybmFtZT1XaWxsaWFtIE1lZGluYX0iLCJhdWQiOiJmb3JvaHViLWZyb250ZW5kIiwibmJmIjoxNzU5Nzg5NTQyLCJ1c2VyX2lkIjoiMSIsInNjb3BlIjpbIndyaXRlIl0sImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6OTAwMCIsImV4cCI6MTc1OTc5MDQ0MiwiaWF0IjoxNzU5Nzg5NTQyLCJpc3N1ZWRfYXQiOiIyMDI1LTEwLTA2VDE3OjI1OjQyLjI1NjAxODcwMCIsImp0aSI6ImZlMTY2MmNhLTc3ZDItNGU4Mi1hMzhjLWY5ZWE0NzUzNjFlNCJ9.L6XWW9RDbCG5WPaInMXhuEXufDr30Wz3T7S3tZ67xnl_Whlpzly9b_Wkjrs-4_57sFdNknz5zKy6rLlU5AwO6-gNUiaZTqBv-N_ORZfhEMRNSCS-k2ddeKwwZDTdTCmrYRVUHudyfh250SxVA9fpyQXKuQVFWKq-BSXo4gv3-X4AGvp8vmdBbsdJLU0jd54pz4n8ypcyFh4p42-lnBbL0n-xIbyTQghnZ34ijpD4fSMKqrt7eUiandlalGaNyBvckJ_JdItr4SOv3C5y02vjeVCePVhS3O7h4rtLrzfcb4TC7xeaO_V8x3b0r4I9FZchn5izeWGQneyz8D-JGyzuAQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"current_password\": \"12345678\",\r\n    \"password\": \"12345678\",\r\n    \"password_confirmation\": \"12345678\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{forohub_api_gateway_url}}/auth/update-password",
+							"host": [
+								"{{forohub_api_gateway_url}}"
+							],
+							"path": [
+								"auth",
+								"update-password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AUTH - Update Username",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJraWQiOiI4ZjE3ZTYwZC02NDhiLTQ5NTEtYTYwYy1jMzQ0OWFhODk2ZTAiLCJhbGciOiJSUzI1NiJ9.eyJvd25lciI6IkZvcm9IdWIiLCJzdWIiOiJ7cHJvZmlsZT1VU0VSLCBpZD0xLCB1c2VybmFtZT1XaWxsaWFtIE1lZGluYX0iLCJhdWQiOiJmb3JvaHViLWZyb250ZW5kIiwibmJmIjoxNzYwMDI4NzExLCJ1c2VyX2lkIjoiMSIsInNjb3BlIjpbIndyaXRlIl0sImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6OTAwMCIsImV4cCI6MTc2MDAyOTYxMSwiaWF0IjoxNzYwMDI4NzExLCJpc3N1ZWRfYXQiOiIyMDI1LTEwLTA5VDExOjUxOjUxLjU4NzQ2OTcwMCIsImp0aSI6Ijk4YjdiNDA1LTUwMDUtNDcwOS1hODc2LTVjNjJlYjNmNzBiMCJ9.PixqDt5dy4MtyH379fMDp4xQlIRuJs45EKRDFjTIHNLpdyUHebLE0GNNvxNEwf4ez2PRgfvmFGwpS_RWvsjXzngDIxc4KZ5vTvrLkSeX9mCY1CwiGKTbEru6cYOBel6H9h-syeL2IS7dSF140S7fIkmuVhpvq0vvEN1ncf3IW3Cg64u8Qv4I-U-Rm9DSSs7y_UVQzMXn9Defj8y4LCyukVLhbuVkWQBAk4wFDfFoJDIVs9M7N_XmeEkEVBiNX1Ntsuvt67bcBoPRjHKJSD4EHz6YC34yZi2dMNTwCmGC5orFuTn-EOXnUnv1QpgAhPcjq8gYIAIi2-9rH1USxUzH9A",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"William Medina\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{forohub_api_gateway_url}}/auth/update-username",
+							"host": [
+								"{{forohub_api_gateway_url}}"
+							],
+							"path": [
+								"auth",
+								"update-username"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AUTH - Get Current User",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJraWQiOiI4ZjE3ZTYwZC02NDhiLTQ5NTEtYTYwYy1jMzQ0OWFhODk2ZTAiLCJhbGciOiJSUzI1NiJ9.eyJvd25lciI6IkZvcm9IdWIiLCJzdWIiOiJ7cHJvZmlsZT1BRE1JTiwgaWQ9NSwgdXNlcm5hbWU9QWRtaW59IiwiYXVkIjoiZm9yb2h1Yi1mcm9udGVuZCIsIm5iZiI6MTc2MDA1NTc3MCwidXNlcl9pZCI6IjUiLCJzY29wZSI6WyJ3cml0ZSJdLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjkwMDAiLCJleHAiOjE3NjAwNTY2NzAsImlhdCI6MTc2MDA1NTc3MCwiaXNzdWVkX2F0IjoiMjAyNS0xMC0wOVQxOToyMjo1MC4wNTcwNzE5MDAiLCJqdGkiOiJmOTE0NDRmNi0xNzU1LTQwMzEtYWU2Ni1jM2JkM2MzMDRlNjkifQ.X7IsBZ6eZHBTjdZj99FEngxBLdCcIIAh2irhJgGsnje4hYh5VuXmxuSKVpy9tOKYXWTPyj3gAt_Hva22Sjuia2lnWl7WBnjrAf1O4GU2Mr4ZRcb7Mn1x1_9l2tk2BOApEmfS0rJKPa-f4Y6SZkqqXyM3_cjGQ-i3-M6JcGt2htlUpwj7e0tPFZup744jqnwhXtBDRxDUNAgBds69Up5212XHRi2RGSmCV_KX2JOHNq2-9t6jDKu_im0AS679RfhGmA1h5r-OMUEjhiAKIak6Ub1z5zpJPriibZ-mjuFo98Xd-gCCqHM39mmxmps3O5CURsTH5GolgyQJvnRn8PnbEQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{forohub_api_gateway_url}}/auth/me",
+							"host": [
+								"{{forohub_api_gateway_url}}"
+							],
+							"path": [
+								"auth",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AUTH - Get User Statistics",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJraWQiOiJlNDRkMWQzOS03ODQ5LTRiZGMtYmIwMS1iOTIxZGUwZDM3NWIiLCJhbGciOiJSUzI1NiJ9.eyJvd25lciI6IkZvcm9IdWIiLCJzdWIiOiJ7cHJvZmlsZT1VU0VSLCBpZD0xLCB1c2VybmFtZT1XaWxsaWFtIE1lZGluYX0iLCJhdWQiOiJmb3JvaHViLWZyb250ZW5kIiwibmJmIjoxNzU5NzkyNDE4LCJ1c2VyX2lkIjoiMSIsInNjb3BlIjpbIndyaXRlIl0sImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6OTAwMCIsImV4cCI6MTc1OTc5MzMxOCwiaWF0IjoxNzU5NzkyNDE4LCJpc3N1ZWRfYXQiOiIyMDI1LTEwLTA2VDE4OjEzOjM4LjQwNTA4OTIwMCIsImp0aSI6ImIzZTJmMDI2LTk3MzEtNDJmMi1hMzg1LWZkYmY1YjM1MWI1OCJ9.Y_wjcfCkiMZshDdxFpwEabrj1A3buQpAe5-iX5-6nKN8LAlugM0isy8xhSjcNgOyQVZRB2bdhuhGYspN7Sv5gjqy-mfhHgzWX9n8YjDstKX2-Dxh4XJbgPhTMTUsLsemZJsUBfEGuESEUm_oZdPPX6pHXi_EMUekbiO5_bIizi5FJxffGp3x01UN2rpAB-xk_smEicYUhDb-t3Eq8Dge9h74ZBNh_-8znq3rZ0buZ1PcD7zIVhJjKp4edkdB_zXrdPEsusT79ujHlFkoEaZVbL-D6P2e21rUZI77maokDfAJrYD6VgTvPK-im1RysBohwEckGSk7arCxMtVWNPsNSA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{forohub_api_gateway_url}}/auth/stats",
+							"host": [
+								"{{forohub_api_gateway_url}}"
+							],
+							"path": [
+								"auth",
+								"stats"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Estos endpoints permiten gestionar las cuentas de usuario, desde la creación hasta la actualización de password y nombres de usuario, así como la obtención de detalles y estadísticas del usuario autenticado."
+		},
+		{
+			"name": "TOPIC SERVICE",
+			"item": [
+				{
+					"name": "INTERNAL",
+					"item": [
+						{
+							"name": "[INTERNAL] - Change Topic Status",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"status\": \"ACTIVE\",\r\n    \"userId\": 5\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{forohub_topic_service_url}}/internal/topic/16/status",
+									"host": [
+										"{{forohub_topic_service_url}}"
+									],
+									"path": [
+										"internal",
+										"topic",
+										"16",
+										"status"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "[INTERNAL] - Get Topic Summary By Id",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{forohub_topic_service_url}}/internal/topic/summary/1",
+									"host": [
+										"{{forohub_topic_service_url}}"
+									],
+									"path": [
+										"internal",
+										"topic",
+										"summary",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "[INTERNAL] - Get Topic Count By User",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{forohub_topic_service_url}}/internal/topic/user/1/count",
+									"host": [
+										"{{forohub_topic_service_url}}"
+									],
+									"path": [
+										"internal",
+										"topic",
+										"user",
+										"1",
+										"count"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "[INTERNAL] - Get User Followed Topic Count",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{forohub_topic_service_url}}/internal/topic/user/1/followed/count",
+									"host": [
+										"{{forohub_topic_service_url}}"
+									],
+									"path": [
+										"internal",
+										"topic",
+										"user",
+										"1",
+										"followed",
+										"count"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "[INTERNAL] - Export All Topics",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{forohub_topic_service_url}}/internal/topic/export",
+									"host": [
+										"{{forohub_topic_service_url}}"
+									],
+									"path": [
+										"internal",
+										"topic",
+										"export"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"description": "Estos endpoints están destinados exclusivamente para la comunicación interna entre microservicios.  \n  \nNo son accesibles desde el cliente externo ni desde el frontend.  \n  \nSe utilizan para sincronización de datos, validaciones internas y comunicación a través de eventos o peticiones directas entre servicios del ecosistema."
+				},
+				{
+					"name": "TOPIC - Create Topic",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJraWQiOiI4ZjE3ZTYwZC02NDhiLTQ5NTEtYTYwYy1jMzQ0OWFhODk2ZTAiLCJhbGciOiJSUzI1NiJ9.eyJvd25lciI6IkZvcm9IdWIiLCJzdWIiOiJ7cHJvZmlsZT1BRE1JTiwgaWQ9NSwgdXNlcm5hbWU9QWRtaW59IiwiYXVkIjoiZm9yb2h1Yi1mcm9udGVuZCIsIm5iZiI6MTc2MDA1OTA2NSwidXNlcl9pZCI6IjUiLCJzY29wZSI6WyJ3cml0ZSJdLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjkwMDAiLCJleHAiOjE3NjAwNTk5NjUsImlhdCI6MTc2MDA1OTA2NSwiaXNzdWVkX2F0IjoiMjAyNS0xMC0wOVQyMDoxNzo0NS42MjAwNjg5MDAiLCJqdGkiOiJjZTg5ODgzNC04ZTdjLTQ0ZTItOWY3Yy00MWUzOGM3ZmM5ZmUifQ.cMo4knapUJiTs3oBVNuOy6QaGpFXDE7y-lzfue8zh-3o4FmVrwKcH-tWTcfMcGXnfwQ2Jq0EgLU7pu523QElseye_5uIRcm5MwxM2y8P0DPy66PqE1RS0kTewl4MvYdiafimtq2nc90WxqTRIuGHvC1hnq4juSXMIUCbo3WusdwSJ8aBxkxH3El_pJX6oWqfdNPkI-jWl_jDKqnVdPbJcXWbckVJJ1YrpxHCLMKKPSEKqHkLRBtqdAokSgKHJLD0aDkRZQUwVCMTwejuMj1HN6flP-uPGyW59ptY0s_FvBybO5f7VKZXPtjDh4ssoH_Sif05NIcdFzzxBP8TvzGMSw",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"Cómo Instalar Java 23\",\r\n    \"description\": \"No he podido descargar la versión 23 de Java.\",\r\n    \"courseId\": \"1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{forohub_api_gateway_url}}/topic",
+							"host": [
+								"{{forohub_api_gateway_url}}"
+							],
+							"path": [
+								"topic"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TOPIC - Get All Topics",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{forohub_api_gateway_url}}/topic",
+							"host": [
+								"{{forohub_api_gateway_url}}"
+							],
+							"path": [
+								"topic"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TOPIC - Get Topic By Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{forohub_api_gateway_url}}/topic/16",
+							"host": [
+								"{{forohub_api_gateway_url}}"
+							],
+							"path": [
+								"topic",
+								"16"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TOPIC - Get All Topics By User",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJraWQiOiI4ZjE3ZTYwZC02NDhiLTQ5NTEtYTYwYy1jMzQ0OWFhODk2ZTAiLCJhbGciOiJSUzI1NiJ9.eyJvd25lciI6IkZvcm9IdWIiLCJzdWIiOiJ7cHJvZmlsZT1BRE1JTiwgaWQ9NSwgdXNlcm5hbWU9QWRtaW59IiwiYXVkIjoiZm9yb2h1Yi1mcm9udGVuZCIsIm5iZiI6MTc2MDA1NTc3MCwidXNlcl9pZCI6IjUiLCJzY29wZSI6WyJ3cml0ZSJdLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjkwMDAiLCJleHAiOjE3NjAwNTY2NzAsImlhdCI6MTc2MDA1NTc3MCwiaXNzdWVkX2F0IjoiMjAyNS0xMC0wOVQxOToyMjo1MC4wNTcwNzE5MDAiLCJqdGkiOiJmOTE0NDRmNi0xNzU1LTQwMzEtYWU2Ni1jM2JkM2MzMDRlNjkifQ.X7IsBZ6eZHBTjdZj99FEngxBLdCcIIAh2irhJgGsnje4hYh5VuXmxuSKVpy9tOKYXWTPyj3gAt_Hva22Sjuia2lnWl7WBnjrAf1O4GU2Mr4ZRcb7Mn1x1_9l2tk2BOApEmfS0rJKPa-f4Y6SZkqqXyM3_cjGQ-i3-M6JcGt2htlUpwj7e0tPFZup744jqnwhXtBDRxDUNAgBds69Up5212XHRi2RGSmCV_KX2JOHNq2-9t6jDKu_im0AS679RfhGmA1h5r-OMUEjhiAKIak6Ub1z5zpJPriibZ-mjuFo98Xd-gCCqHM39mmxmps3O5CURsTH5GolgyQJvnRn8PnbEQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{forohub_api_gateway_url}}/topic/user/topics",
+							"host": [
+								"{{forohub_api_gateway_url}}"
+							],
+							"path": [
+								"topic",
+								"user",
+								"topics"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TOPIC - Update Topic",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJraWQiOiI4ZjE3ZTYwZC02NDhiLTQ5NTEtYTYwYy1jMzQ0OWFhODk2ZTAiLCJhbGciOiJSUzI1NiJ9.eyJvd25lciI6IkZvcm9IdWIiLCJzdWIiOiJ7cHJvZmlsZT1BRE1JTiwgaWQ9NSwgdXNlcm5hbWU9QWRtaW59IiwiYXVkIjoiZm9yb2h1Yi1mcm9udGVuZCIsIm5iZiI6MTc2MDA2MDIxNywidXNlcl9pZCI6IjUiLCJzY29wZSI6WyJ3cml0ZSJdLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjkwMDAiLCJleHAiOjE3NjAwNjExMTcsImlhdCI6MTc2MDA2MDIxNywiaXNzdWVkX2F0IjoiMjAyNS0xMC0wOVQyMDozNjo1Ny42MTc0ODMiLCJqdGkiOiJiZTQ1MDEzYS00YmNhLTRiZjItODdkZi1jM2U1NWY2MzEyMjUifQ.Flk2Yojz8DtllmIPZYpMpTTahvfHlHfVcM8BjxzuXBP3lvSIbasEDSAgdNaexPWtR-lr8tditpVvfj135r45vjiHqmqnOcumvtHAsXyncYygx0Mjt_HN6Em8MDVBwq5wCsQIrZX-nkxmXjZ9gJfCs96-MCifHC4Fr5a80jk1GlgJwt9uJeymBwy_fNv9JhsiKCux9NdCn0MNpdDQ9DYS_StMHAzyX_b1fvH_fbZESr5ORt5C_eDITEROC6R8hEdDfwBs-TUIptzaBjFS6SjwVoIe4Vv2DJ5FlddF7qa70tlqifdsdxFon9DKQkk0_q0l7iXZFmWMOdM_-_J_ti-Zpg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"Cómo Instalar Java 23 - Actualización\",\r\n    \"description\": \"Ahora la versión 23 de Java está disponible, pero no puedo instalarla.\",\r\n    \"courseId\": \"1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{forohub_api_gateway_url}}/topic/16",
+							"host": [
+								"{{forohub_api_gateway_url}}"
+							],
+							"path": [
+								"topic",
+								"16"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TOPIC - Delete Topic",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJraWQiOiI4ZjE3ZTYwZC02NDhiLTQ5NTEtYTYwYy1jMzQ0OWFhODk2ZTAiLCJhbGciOiJSUzI1NiJ9.eyJvd25lciI6IkZvcm9IdWIiLCJzdWIiOiJ7cHJvZmlsZT1BRE1JTiwgaWQ9NSwgdXNlcm5hbWU9QWRtaW59IiwiYXVkIjoiZm9yb2h1Yi1mcm9udGVuZCIsIm5iZiI6MTc2MDAyODQ3NSwidXNlcl9pZCI6IjUiLCJzY29wZSI6WyJ3cml0ZSJdLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjkwMDAiLCJleHAiOjE3NjAwMjkzNzUsImlhdCI6MTc2MDAyODQ3NSwiaXNzdWVkX2F0IjoiMjAyNS0xMC0wOVQxMTo0Nzo1NS44ODM2ODUiLCJqdGkiOiI5MDE4YTc2My1mMDE4LTQ4ODctYWI5NC0wNjI3M2YyNjA5MGIifQ.J_63fISjW859zBps5xUD-JY6pzHCE2xX_FuuYq9fYZwsZuwmz7rMAoxcYfFnA2YjW9d7RMCh1h1y7WE5m9wkYpeSq0z4VmUAl6nDyE2YTVKq3svzP4qhehWRtvXgcmr67vjKjbHl37Oe3PMkCIAsneVUL_dGffnUfm3PO14jXYUTbLL3QHVh1et1l5oRlikHB1f7W58uL1fUCSY0KtyqxpntbVzawpYmKwV4P5VCAp-Tj-W6VMvC1OoiwqOFL4FXLyVRBdFCOxoa8bA5M2_nRAjVUhe_fhGaQfEloaFf3p6lEbuut7T6cPpy21NGr1U3Oi_LTvj-uFrKF2A1O9IoAA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{forohub_api_gateway_url}}/topic/16",
+							"host": [
+								"{{forohub_api_gateway_url}}"
+							],
+							"path": [
+								"topic",
+								"16"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TOPIC - Toggle Follow Topic",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJraWQiOiI4ZjE3ZTYwZC02NDhiLTQ5NTEtYTYwYy1jMzQ0OWFhODk2ZTAiLCJhbGciOiJSUzI1NiJ9.eyJvd25lciI6IkZvcm9IdWIiLCJzdWIiOiJ7cHJvZmlsZT1BRE1JTiwgaWQ9NSwgdXNlcm5hbWU9QWRtaW59IiwiYXVkIjoiZm9yb2h1Yi1mcm9udGVuZCIsIm5iZiI6MTc2MDAzODIyNCwidXNlcl9pZCI6IjUiLCJzY29wZSI6WyJ3cml0ZSJdLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjkwMDAiLCJleHAiOjE3NjAwMzkxMjQsImlhdCI6MTc2MDAzODIyNCwiaXNzdWVkX2F0IjoiMjAyNS0xMC0wOVQxNDozMDoyNC40MTQyOTAiLCJqdGkiOiJkOTZjNWFjOC00ZGU1LTQ1M2MtYWFmMi1mMGU0ODI2MzAyMmQifQ.jRTXEN9pAxfFA35vhTgN6vtLwmVr5JFROgdOZt-MWuc8-uSuNyPKKvRXiqcZMPRvze9J6uUSjfnBioHKUf7OeYdt5pBYfCKHB390u4Bd1dK4arHC8JybPTG81mQkQgPJfYXJy_N68ErtuSjF_qg9Sg9QVzg_0F5KXNf5VArmcEsLPUudnid2f8414wVaZp5_SrZs5A61fc9i8vQnZOxkeFWkw-ZLTLiK_WVxr7CzQw7vhjL-JzRE_zhZAesaU8TYQYPivqfT6dCagguGIgfvd82lo3XLz9INr1rm5l8MdOzcHdngqGzifkeZr6dQlSZgrq3kpE5bKKxpV3WGhU9c0Q",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{forohub_api_gateway_url}}/topic/follow/16",
+							"host": [
+								"{{forohub_api_gateway_url}}"
+							],
+							"path": [
+								"topic",
+								"follow",
+								"16"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TOPIC - Get All Followed Topics By User",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJraWQiOiI4ZjE3ZTYwZC02NDhiLTQ5NTEtYTYwYy1jMzQ0OWFhODk2ZTAiLCJhbGciOiJSUzI1NiJ9.eyJvd25lciI6IkZvcm9IdWIiLCJzdWIiOiJ7cHJvZmlsZT1BRE1JTiwgaWQ9NSwgdXNlcm5hbWU9QWRtaW59IiwiYXVkIjoiZm9yb2h1Yi1mcm9udGVuZCIsIm5iZiI6MTc2MDA1NTc3MCwidXNlcl9pZCI6IjUiLCJzY29wZSI6WyJ3cml0ZSJdLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjkwMDAiLCJleHAiOjE3NjAwNTY2NzAsImlhdCI6MTc2MDA1NTc3MCwiaXNzdWVkX2F0IjoiMjAyNS0xMC0wOVQxOToyMjo1MC4wNTcwNzE5MDAiLCJqdGkiOiJmOTE0NDRmNi0xNzU1LTQwMzEtYWU2Ni1jM2JkM2MzMDRlNjkifQ.X7IsBZ6eZHBTjdZj99FEngxBLdCcIIAh2irhJgGsnje4hYh5VuXmxuSKVpy9tOKYXWTPyj3gAt_Hva22Sjuia2lnWl7WBnjrAf1O4GU2Mr4ZRcb7Mn1x1_9l2tk2BOApEmfS0rJKPa-f4Y6SZkqqXyM3_cjGQ-i3-M6JcGt2htlUpwj7e0tPFZup744jqnwhXtBDRxDUNAgBds69Up5212XHRi2RGSmCV_KX2JOHNq2-9t6jDKu_im0AS679RfhGmA1h5r-OMUEjhiAKIak6Ub1z5zpJPriibZ-mjuFo98Xd-gCCqHM39mmxmps3O5CURsTH5GolgyQJvnRn8PnbEQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{forohub_api_gateway_url}}/topic/user/followed-topics",
+							"host": [
+								"{{forohub_api_gateway_url}}"
+							],
+							"path": [
+								"topic",
+								"user",
+								"followed-topics"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Estos endpoints gestionan la creación, obtención, actualización y eliminación de tópicos, así como el seguimiento de los mismos por parte de los usuarios. La eliminación de un tópico es lógica, es decir, no se elimina físicamente de la base de datos, sino que se marca como eliminado."
+		},
+		{
+			"name": "REPLY SERVICE",
+			"item": [
+				{
+					"name": "INTERNAL",
+					"item": [
+						{
+							"name": "[INTERNAL] - Get All Replies By Topic",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{forohub_reply_service_url}}/internal/reply/topic/15",
+									"host": [
+										"{{forohub_reply_service_url}}"
+									],
+									"path": [
+										"internal",
+										"reply",
+										"topic",
+										"15"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "[INTERNAL] - Get Reply Count By Topic",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{forohub_reply_service_url}}/internal/reply/topic/15/count",
+									"host": [
+										"{{forohub_reply_service_url}}"
+									],
+									"path": [
+										"internal",
+										"reply",
+										"topic",
+										"15",
+										"count"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "[INTERNAL] - Get Reply Counts By Topic Ids",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{forohub_reply_service_url}}/internal/reply/count/batch?ids=1,2,3,4,5,6,7,8",
+									"host": [
+										"{{forohub_reply_service_url}}"
+									],
+									"path": [
+										"internal",
+										"reply",
+										"count",
+										"batch"
+									],
+									"query": [
+										{
+											"key": "ids",
+											"value": "1,2,3,4,5,6,7,8"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "[INTERNAL] - Get User Reply Count",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{forohub_reply_service_url}}/internal/reply/user/1/count",
+									"host": [
+										"{{forohub_reply_service_url}}"
+									],
+									"path": [
+										"internal",
+										"reply",
+										"user",
+										"1",
+										"count"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"description": "Estos endpoints están destinados exclusivamente para la comunicación interna entre microservicios.  \n  \nNo son accesibles desde el cliente externo ni desde el frontend.  \n  \nSe utilizan para sincronización de datos, validaciones internas y comunicación a través de eventos o peticiones directas entre servicios del ecosistema."
+				},
+				{
+					"name": "REPLY - Create Reply",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJraWQiOiI4ZjE3ZTYwZC02NDhiLTQ5NTEtYTYwYy1jMzQ0OWFhODk2ZTAiLCJhbGciOiJSUzI1NiJ9.eyJvd25lciI6IkZvcm9IdWIiLCJzdWIiOiJ7cHJvZmlsZT1VU0VSLCBpZD0xLCB1c2VybmFtZT1XaWxsaWFtIE1lZGluYX0iLCJhdWQiOiJmb3JvaHViLWZyb250ZW5kIiwibmJmIjoxNzYwMDM4MDIxLCJ1c2VyX2lkIjoiMSIsInNjb3BlIjpbIndyaXRlIl0sImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6OTAwMCIsImV4cCI6MTc2MDAzODkyMSwiaWF0IjoxNzYwMDM4MDIxLCJpc3N1ZWRfYXQiOiIyMDI1LTEwLTA5VDE0OjI3OjAxLjk1ODkyMjkwMCIsImp0aSI6ImRmODRkZmU4LWRlZTktNGVmZC1iNzU3LTBjNmY2MDE5NjQ5NyJ9.sWgrB1mGtP97fbsm5FMi7f_FOtRjoRTfu6yjcqha_dgpr5mCUxwmeNv9RI3j2fs1-lyrBWEfN6Z4oQhr9wwe7XrgP_zhpuZWiHVH3var0hal_6kwWE78F8KX2Xs4wSpKVRsbnPXffAzxOo7-KczUrHm5IF3fNOTDeufcyO429QCwDt1QQDVIXYUbHbuL-6xyNLG_5dkIjNFRX0kBaO94fL-YJuIDGZdIsKLTHrnk_LytWW60jjiOC1ZAygfsOJhP4t2uX96kVwltVPXIC3YabfPj5EM_yT-2rfhnaEIcszdnpNuomtmbQjEqcidsVR0yFZiys3gfxnDHZA2-_TIEgw",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"topicId\": \"16\",\r\n    \"content\": \"Puedes instalar Java 23 desde el sitio oficial o usar SDK\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{forohub_api_gateway_url}}/reply",
+							"host": [
+								"{{forohub_api_gateway_url}}"
+							],
+							"path": [
+								"reply"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "REPLY - Update Reply",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJraWQiOiI4ZjE3ZTYwZC02NDhiLTQ5NTEtYTYwYy1jMzQ0OWFhODk2ZTAiLCJhbGciOiJSUzI1NiJ9.eyJvd25lciI6IkZvcm9IdWIiLCJzdWIiOiJ7cHJvZmlsZT1VU0VSLCBpZD0xLCB1c2VybmFtZT1XaWxsaWFtIE1lZGluYX0iLCJhdWQiOiJmb3JvaHViLWZyb250ZW5kIiwibmJmIjoxNzYwMDIwMTA0LCJ1c2VyX2lkIjoiMSIsInNjb3BlIjpbIndyaXRlIl0sImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6OTAwMCIsImV4cCI6MTc2MDAyMTAwNCwiaWF0IjoxNzYwMDIwMTA0LCJpc3N1ZWRfYXQiOiIyMDI1LTEwLTA5VDA5OjI4OjI0LjgwMjQ2MjIwMCIsImp0aSI6IjJhN2ZjOTE3LTc4ODctNDdkNy1iNzUyLWM3YWZlYzNiNGEzMCJ9.tIibS_2GtbHZ4uVVrP_5Hi2yxkN0QCFXK2wxywsgc3w5x_t9ZcN3lTk6ic8XM8O7oqLukeY_HhIcaAGe7FVa2zGWhtj8X2Z0-aApS_GksvofvVWRzPCTJefn8W0sOQR_XItb2Mu-M65RC3J4-h0Bf370QrJCqdX_bqaa_WhsQfr3Hu3S_qcmUhQCrIQJWl8pkTHZxx3g8bcm0fIo_izQMw4UyhvkqVaqz0beWKeeNz3fXv-XNgARMM7BMNNavOltvHbZ0blypOMkGnhY64EKsZgtZGl-vqi-wkKsUybvfRdUaRiSntTxk-eA5SIDlznXDlvr5O_03FkxpCoitV0_6w",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"content\": \"Te recomiendo verificar la versión y usar el instalador oficial.\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{forohub_api_gateway_url}}/reply/23",
+							"host": [
+								"{{forohub_api_gateway_url}}"
+							],
+							"path": [
+								"reply",
+								"23"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "REPLY - Delete Reply",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJraWQiOiI4ZjE3ZTYwZC02NDhiLTQ5NTEtYTYwYy1jMzQ0OWFhODk2ZTAiLCJhbGciOiJSUzI1NiJ9.eyJvd25lciI6IkZvcm9IdWIiLCJzdWIiOiJ7cHJvZmlsZT1VU0VSLCBpZD0xLCB1c2VybmFtZT1XaWxsaWFtIE1lZGluYX0iLCJhdWQiOiJmb3JvaHViLWZyb250ZW5kIiwibmJmIjoxNzYwMDIwMTA0LCJ1c2VyX2lkIjoiMSIsInNjb3BlIjpbIndyaXRlIl0sImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6OTAwMCIsImV4cCI6MTc2MDAyMTAwNCwiaWF0IjoxNzYwMDIwMTA0LCJpc3N1ZWRfYXQiOiIyMDI1LTEwLTA5VDA5OjI4OjI0LjgwMjQ2MjIwMCIsImp0aSI6IjJhN2ZjOTE3LTc4ODctNDdkNy1iNzUyLWM3YWZlYzNiNGEzMCJ9.tIibS_2GtbHZ4uVVrP_5Hi2yxkN0QCFXK2wxywsgc3w5x_t9ZcN3lTk6ic8XM8O7oqLukeY_HhIcaAGe7FVa2zGWhtj8X2Z0-aApS_GksvofvVWRzPCTJefn8W0sOQR_XItb2Mu-M65RC3J4-h0Bf370QrJCqdX_bqaa_WhsQfr3Hu3S_qcmUhQCrIQJWl8pkTHZxx3g8bcm0fIo_izQMw4UyhvkqVaqz0beWKeeNz3fXv-XNgARMM7BMNNavOltvHbZ0blypOMkGnhY64EKsZgtZGl-vqi-wkKsUybvfRdUaRiSntTxk-eA5SIDlznXDlvr5O_03FkxpCoitV0_6w",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{forohub_api_gateway_url}}/reply/23",
+							"host": [
+								"{{forohub_api_gateway_url}}"
+							],
+							"path": [
+								"reply",
+								"23"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "REPLY - Get Reply By Id",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{forohub_api_gateway_url}}/reply/23",
+							"host": [
+								"{{forohub_api_gateway_url}}"
+							],
+							"path": [
+								"reply",
+								"23"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "REPLY - Set Correct Reply",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJraWQiOiI4ZjE3ZTYwZC02NDhiLTQ5NTEtYTYwYy1jMzQ0OWFhODk2ZTAiLCJhbGciOiJSUzI1NiJ9.eyJvd25lciI6IkZvcm9IdWIiLCJzdWIiOiJ7cHJvZmlsZT1BRE1JTiwgaWQ9NSwgdXNlcm5hbWU9QWRtaW59IiwiYXVkIjoiZm9yb2h1Yi1mcm9udGVuZCIsIm5iZiI6MTc2MDA1OTA2NSwidXNlcl9pZCI6IjUiLCJzY29wZSI6WyJ3cml0ZSJdLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjkwMDAiLCJleHAiOjE3NjAwNTk5NjUsImlhdCI6MTc2MDA1OTA2NSwiaXNzdWVkX2F0IjoiMjAyNS0xMC0wOVQyMDoxNzo0NS42MjAwNjg5MDAiLCJqdGkiOiJjZTg5ODgzNC04ZTdjLTQ0ZTItOWY3Yy00MWUzOGM3ZmM5ZmUifQ.cMo4knapUJiTs3oBVNuOy6QaGpFXDE7y-lzfue8zh-3o4FmVrwKcH-tWTcfMcGXnfwQ2Jq0EgLU7pu523QElseye_5uIRcm5MwxM2y8P0DPy66PqE1RS0kTewl4MvYdiafimtq2nc90WxqTRIuGHvC1hnq4juSXMIUCbo3WusdwSJ8aBxkxH3El_pJX6oWqfdNPkI-jWl_jDKqnVdPbJcXWbckVJJ1YrpxHCLMKKPSEKqHkLRBtqdAokSgKHJLD0aDkRZQUwVCMTwejuMj1HN6flP-uPGyW59ptY0s_FvBybO5f7VKZXPtjDh4ssoH_Sif05NIcdFzzxBP8TvzGMSw",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "{{forohub_api_gateway_url}}/reply/27",
+							"host": [
+								"{{forohub_api_gateway_url}}"
+							],
+							"path": [
+								"reply",
+								"27"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "REPLY - Get All replies By User",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJraWQiOiI4ZjE3ZTYwZC02NDhiLTQ5NTEtYTYwYy1jMzQ0OWFhODk2ZTAiLCJhbGciOiJSUzI1NiJ9.eyJvd25lciI6IkZvcm9IdWIiLCJzdWIiOiJ7cHJvZmlsZT1BRE1JTiwgaWQ9NSwgdXNlcm5hbWU9QWRtaW59IiwiYXVkIjoiZm9yb2h1Yi1mcm9udGVuZCIsIm5iZiI6MTc2MDA1NTc3MCwidXNlcl9pZCI6IjUiLCJzY29wZSI6WyJ3cml0ZSJdLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjkwMDAiLCJleHAiOjE3NjAwNTY2NzAsImlhdCI6MTc2MDA1NTc3MCwiaXNzdWVkX2F0IjoiMjAyNS0xMC0wOVQxOToyMjo1MC4wNTcwNzE5MDAiLCJqdGkiOiJmOTE0NDRmNi0xNzU1LTQwMzEtYWU2Ni1jM2JkM2MzMDRlNjkifQ.X7IsBZ6eZHBTjdZj99FEngxBLdCcIIAh2irhJgGsnje4hYh5VuXmxuSKVpy9tOKYXWTPyj3gAt_Hva22Sjuia2lnWl7WBnjrAf1O4GU2Mr4ZRcb7Mn1x1_9l2tk2BOApEmfS0rJKPa-f4Y6SZkqqXyM3_cjGQ-i3-M6JcGt2htlUpwj7e0tPFZup744jqnwhXtBDRxDUNAgBds69Up5212XHRi2RGSmCV_KX2JOHNq2-9t6jDKu_im0AS679RfhGmA1h5r-OMUEjhiAKIak6Ub1z5zpJPriibZ-mjuFo98Xd-gCCqHM39mmxmps3O5CURsTH5GolgyQJvnRn8PnbEQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{forohub_api_gateway_url}}/reply/user/replies",
+							"host": [
+								"{{forohub_api_gateway_url}}"
+							],
+							"path": [
+								"reply",
+								"user",
+								"replies"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Los endpoints de respuestas gestionan la creación, actualización, eliminación y la posibilidad de marcar una respuesta como solución. Al igual que los tópicos, la eliminación de respuestas es lógica."
+		},
+		{
+			"name": "COURSE SERVICE",
+			"item": [
+				{
+					"name": "INTERNAL",
+					"item": [
+						{
+							"name": "[INTERNAL] - Get Course ById",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{forohub_course_service_url}}/internal/course/1",
+									"host": [
+										"{{forohub_course_service_url}}"
+									],
+									"path": [
+										"internal",
+										"course",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "[INTERNAL] - Get Courses By Ids",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{forohub_course_service_url}}/internal/course/batch?ids=1,2,3",
+									"host": [
+										"{{forohub_course_service_url}}"
+									],
+									"path": [
+										"internal",
+										"course",
+										"batch"
+									],
+									"query": [
+										{
+											"key": "ids",
+											"value": "1,2,3"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"description": "Estos endpoints están destinados exclusivamente para la comunicación interna entre microservicios.  \n  \nNo son accesibles desde el cliente externo ni desde el frontend.  \n  \nSe utilizan para sincronización de datos, validaciones internas y comunicación a través de eventos o peticiones directas entre servicios del ecosistema."
+				},
+				{
+					"name": "COURSE - Get All Courses",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{forohub_api_gateway_url}}/course",
+							"host": [
+								"{{forohub_api_gateway_url}}"
+							],
+							"path": [
+								"course"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Este endpoint permite obtener información sobre los cursos disponibles en la API."
+		},
+		{
+			"name": "NOTIFY SERVICE",
+			"item": [
+				{
+					"name": "NOTIFY - Get All Notifications By User",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJraWQiOiI4ZjE3ZTYwZC02NDhiLTQ5NTEtYTYwYy1jMzQ0OWFhODk2ZTAiLCJhbGciOiJSUzI1NiJ9.eyJvd25lciI6IkZvcm9IdWIiLCJzdWIiOiJ7cHJvZmlsZT1BRE1JTiwgaWQ9NSwgdXNlcm5hbWU9QWRtaW59IiwiYXVkIjoiZm9yb2h1Yi1mcm9udGVuZCIsIm5iZiI6MTc2MDA1NTc3MCwidXNlcl9pZCI6IjUiLCJzY29wZSI6WyJ3cml0ZSJdLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjkwMDAiLCJleHAiOjE3NjAwNTY2NzAsImlhdCI6MTc2MDA1NTc3MCwiaXNzdWVkX2F0IjoiMjAyNS0xMC0wOVQxOToyMjo1MC4wNTcwNzE5MDAiLCJqdGkiOiJmOTE0NDRmNi0xNzU1LTQwMzEtYWU2Ni1jM2JkM2MzMDRlNjkifQ.X7IsBZ6eZHBTjdZj99FEngxBLdCcIIAh2irhJgGsnje4hYh5VuXmxuSKVpy9tOKYXWTPyj3gAt_Hva22Sjuia2lnWl7WBnjrAf1O4GU2Mr4ZRcb7Mn1x1_9l2tk2BOApEmfS0rJKPa-f4Y6SZkqqXyM3_cjGQ-i3-M6JcGt2htlUpwj7e0tPFZup744jqnwhXtBDRxDUNAgBds69Up5212XHRi2RGSmCV_KX2JOHNq2-9t6jDKu_im0AS679RfhGmA1h5r-OMUEjhiAKIak6Ub1z5zpJPriibZ-mjuFo98Xd-gCCqHM39mmxmps3O5CURsTH5GolgyQJvnRn8PnbEQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{forohub_api_gateway_url}}/notify",
+							"host": [
+								"{{forohub_api_gateway_url}}"
+							],
+							"path": [
+								"notify"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "NOTIFY - Delete Notification",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJraWQiOiI4ZjE3ZTYwZC02NDhiLTQ5NTEtYTYwYy1jMzQ0OWFhODk2ZTAiLCJhbGciOiJSUzI1NiJ9.eyJvd25lciI6IkZvcm9IdWIiLCJzdWIiOiJ7cHJvZmlsZT1BRE1JTiwgaWQ9NSwgdXNlcm5hbWU9QWRtaW59IiwiYXVkIjoiZm9yb2h1Yi1mcm9udGVuZCIsIm5iZiI6MTc2MDA1NTc3MCwidXNlcl9pZCI6IjUiLCJzY29wZSI6WyJ3cml0ZSJdLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjkwMDAiLCJleHAiOjE3NjAwNTY2NzAsImlhdCI6MTc2MDA1NTc3MCwiaXNzdWVkX2F0IjoiMjAyNS0xMC0wOVQxOToyMjo1MC4wNTcwNzE5MDAiLCJqdGkiOiJmOTE0NDRmNi0xNzU1LTQwMzEtYWU2Ni1jM2JkM2MzMDRlNjkifQ.X7IsBZ6eZHBTjdZj99FEngxBLdCcIIAh2irhJgGsnje4hYh5VuXmxuSKVpy9tOKYXWTPyj3gAt_Hva22Sjuia2lnWl7WBnjrAf1O4GU2Mr4ZRcb7Mn1x1_9l2tk2BOApEmfS0rJKPa-f4Y6SZkqqXyM3_cjGQ-i3-M6JcGt2htlUpwj7e0tPFZup744jqnwhXtBDRxDUNAgBds69Up5212XHRi2RGSmCV_KX2JOHNq2-9t6jDKu_im0AS679RfhGmA1h5r-OMUEjhiAKIak6Ub1z5zpJPriibZ-mjuFo98Xd-gCCqHM39mmxmps3O5CURsTH5GolgyQJvnRn8PnbEQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{forohub_api_gateway_url}}/notify/1",
+							"host": [
+								"{{forohub_api_gateway_url}}"
+							],
+							"path": [
+								"notify",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "NOTIFY - Mark Notification As Read",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJraWQiOiI4ZjE3ZTYwZC02NDhiLTQ5NTEtYTYwYy1jMzQ0OWFhODk2ZTAiLCJhbGciOiJSUzI1NiJ9.eyJvd25lciI6IkZvcm9IdWIiLCJzdWIiOiJ7cHJvZmlsZT1BRE1JTiwgaWQ9NSwgdXNlcm5hbWU9QWRtaW59IiwiYXVkIjoiZm9yb2h1Yi1mcm9udGVuZCIsIm5iZiI6MTc2MDA2MDIxNywidXNlcl9pZCI6IjUiLCJzY29wZSI6WyJ3cml0ZSJdLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjkwMDAiLCJleHAiOjE3NjAwNjExMTcsImlhdCI6MTc2MDA2MDIxNywiaXNzdWVkX2F0IjoiMjAyNS0xMC0wOVQyMDozNjo1Ny42MTc0ODMiLCJqdGkiOiJiZTQ1MDEzYS00YmNhLTRiZjItODdkZi1jM2U1NWY2MzEyMjUifQ.Flk2Yojz8DtllmIPZYpMpTTahvfHlHfVcM8BjxzuXBP3lvSIbasEDSAgdNaexPWtR-lr8tditpVvfj135r45vjiHqmqnOcumvtHAsXyncYygx0Mjt_HN6Em8MDVBwq5wCsQIrZX-nkxmXjZ9gJfCs96-MCifHC4Fr5a80jk1GlgJwt9uJeymBwy_fNv9JhsiKCux9NdCn0MNpdDQ9DYS_StMHAzyX_b1fvH_fbZESr5ORt5C_eDITEROC6R8hEdDfwBs-TUIptzaBjFS6SjwVoIe4Vv2DJ5FlddF7qa70tlqifdsdxFon9DKQkk0_q0l7iXZFmWMOdM_-_J_ti-Zpg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "{{forohub_api_gateway_url}}/notify/1",
+							"host": [
+								"{{forohub_api_gateway_url}}"
+							],
+							"path": [
+								"notify",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Estos endpoints gestionan las notificaciones del usuario, permitiendo obtenerlas, eliminarlas o marcarlas como leídas."
+		},
+		{
+			"name": "TOPIC READ SERVICE",
+			"item": [
+				{
+					"name": "TOPIC READ - Get All Topics",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"grant_type\": \"authorization_code\",\r\n    \"code\": \"cHwyGchUDPFYELi-cOo4cQwn_JNoF5lKOxY-BrdaJRSj_XnL18kUItKUa9w7V8yb-GbgOJ3n4d8WEIRL78SwKqSKpFNkgf62rrqF9QOfiNU2zT4U3C9bcB5fWU00jebj\",\r\n    \"redirect_uri\": \"https://oauthdebugger.com/debug\"\r\n}"
+						},
+						"url": {
+							"raw": "{{forohub_api_gateway_url}}/topic",
+							"host": [
+								"{{forohub_api_gateway_url}}"
+							],
+							"path": [
+								"topic"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TOPIC READ - Get Topic By Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{forohub_api_gateway_url}}/topic/16",
+							"host": [
+								"{{forohub_api_gateway_url}}"
+							],
+							"path": [
+								"topic",
+								"16"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TOPIC READ - Get All Topics By User",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJraWQiOiI4ZjE3ZTYwZC02NDhiLTQ5NTEtYTYwYy1jMzQ0OWFhODk2ZTAiLCJhbGciOiJSUzI1NiJ9.eyJvd25lciI6IkZvcm9IdWIiLCJzdWIiOiJ7cHJvZmlsZT1BRE1JTiwgaWQ9NSwgdXNlcm5hbWU9QWRtaW59IiwiYXVkIjoiZm9yb2h1Yi1mcm9udGVuZCIsIm5iZiI6MTc2MDA0Nzk0NCwidXNlcl9pZCI6IjUiLCJzY29wZSI6WyJ3cml0ZSJdLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjkwMDAiLCJleHAiOjE3NjAwNDg4NDQsImlhdCI6MTc2MDA0Nzk0NCwiaXNzdWVkX2F0IjoiMjAyNS0xMC0wOVQxNzoxMjoyNC44MTM4MDAxMDAiLCJqdGkiOiIzYTZmMDU0ZS04NmMxLTQ4ZTYtODVmZC0zOTRiOTQ4YzJjMzYifQ.ZTVXiSEK2eOmVi0Gb1m-B7mQ8wyEY_2OwsbDI06d3D6DNHCJQ05lQ7mwAonejciMNnZXfrP3V20rc_K0-gu_5Nyk8b4ps0yk6NrkHzqmtI6to938nBQZFcZowiGLVKCx5aZLu1LNihg6fHogvVVMhV0khvlfip5CC6aTZsrAiUCRVy0SKoJlYQmM_NhLwKW7qtOCZSFVFtmKw8fIdB00hPkarNE89GA78QTdMnQGcs5Hd1fmsm1HkkEfQt7r0MnCJC3QoHG-HfvMFbLQMXvJWkrQsDO45_CoO3D0BDDLS5Jvb9Km9yqA-F91WuILrvpNZ9Af7RZNBFA8vYLbzJwbDw",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{forohub_api_gateway_url}}/topic/user/topics",
+							"host": [
+								"{{forohub_api_gateway_url}}"
+							],
+							"path": [
+								"topic",
+								"user",
+								"topics"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TOPIC READ - Get All Followed Topics By User",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJraWQiOiI4ZjE3ZTYwZC02NDhiLTQ5NTEtYTYwYy1jMzQ0OWFhODk2ZTAiLCJhbGciOiJSUzI1NiJ9.eyJvd25lciI6IkZvcm9IdWIiLCJzdWIiOiJ7cHJvZmlsZT1BRE1JTiwgaWQ9NSwgdXNlcm5hbWU9QWRtaW59IiwiYXVkIjoiZm9yb2h1Yi1mcm9udGVuZCIsIm5iZiI6MTc2MDA0Nzk0NCwidXNlcl9pZCI6IjUiLCJzY29wZSI6WyJ3cml0ZSJdLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjkwMDAiLCJleHAiOjE3NjAwNDg4NDQsImlhdCI6MTc2MDA0Nzk0NCwiaXNzdWVkX2F0IjoiMjAyNS0xMC0wOVQxNzoxMjoyNC44MTM4MDAxMDAiLCJqdGkiOiIzYTZmMDU0ZS04NmMxLTQ4ZTYtODVmZC0zOTRiOTQ4YzJjMzYifQ.ZTVXiSEK2eOmVi0Gb1m-B7mQ8wyEY_2OwsbDI06d3D6DNHCJQ05lQ7mwAonejciMNnZXfrP3V20rc_K0-gu_5Nyk8b4ps0yk6NrkHzqmtI6to938nBQZFcZowiGLVKCx5aZLu1LNihg6fHogvVVMhV0khvlfip5CC6aTZsrAiUCRVy0SKoJlYQmM_NhLwKW7qtOCZSFVFtmKw8fIdB00hPkarNE89GA78QTdMnQGcs5Hd1fmsm1HkkEfQt7r0MnCJC3QoHG-HfvMFbLQMXvJWkrQsDO45_CoO3D0BDDLS5Jvb9Km9yqA-F91WuILrvpNZ9Af7RZNBFA8vYLbzJwbDw",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{forohub_api_gateway_url}}/topic/user/followed-topics",
+							"host": [
+								"{{forohub_api_gateway_url}}"
+							],
+							"path": [
+								"topic",
+								"user",
+								"followed-topics"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Estos endpoints proporcionan acceso optimizado a la información combinada de los tópicos, usuarios, respuestas y cursos.  \n  \nCentralizan los datos provenientes de distintos microservicios (topic, reply, user, course) en una vista unificada almacenada en MongoDB, lo que permite una lectura más rápida y eficiente para el frontend.  \n  \nSe actualiza en tiempo real mediante eventos Kafka que reflejan los cambios realizados en los microservicios de origen."
+		},
+		{
+			"name": "AUTH SERVER",
+			"item": [
+				{
+					"name": "AUTH SERVER - Get Access and Refresh Token with Code",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "s3cr3tF0rF0r0Hub123!",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "forohub-frontend",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "grant_type",
+									"value": "authorization_code",
+									"type": "text"
+								},
+								{
+									"key": "code",
+									"value": "8LYInW9NMclo4PtM1FjbiRD0iuMpB_1pzR2fSRiphKuT8c1-hmmWuqFAqnDtAls6Er03i13xa8LB1cQ3-lI5QloaMIu5VPklyKc335DHYvngT_2zD5_JdrQpoNA_Qd1F",
+									"type": "text"
+								},
+								{
+									"key": "redirect_uri",
+									"value": "https://oauthdebugger.com/debug",
+									"type": "text"
+								},
+								{
+									"key": "client_id",
+									"value": "forohub-frontend",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "code_verifier",
+									"value": "0CiaKvQi0Xxb7x7ISRzoYLx8Hwx9RkplVgz9QxV5tW5",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "{{forohub_auth_server_url}}/oauth2/token",
+							"host": [
+								"{{forohub_auth_server_url}}"
+							],
+							"path": [
+								"oauth2",
+								"token"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AUTH SERVER - Get Access Token With Refresh Token",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "s3cr3tF0rF0r0Hub123!",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "forohub-frontend",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "grant_type",
+									"value": "refresh_token",
+									"type": "text"
+								},
+								{
+									"key": "refresh_token",
+									"value": "HaRzNIg9mjQBUncPh_2URxpbtBQkQf1W9My5MIkenr5RZDfDGxPiQ0caB9TspKsMPD3mWJ4gWy9RaEICsq9LPInaXjoUxtNUZooNSEOtbmaFP3E4w6GsfU-r6CO5R0-I",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{forohub_auth_server_url}}/oauth2/token",
+							"host": [
+								"{{forohub_auth_server_url}}"
+							],
+							"path": [
+								"oauth2",
+								"token"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AUTH SERVER - Revoke Token",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "s3cr3tF0rF0r0Hub123!",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "forohub-frontend",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "token",
+									"value": "HaRzNIg9mjQBUncPh_2URxpbtBQkQf1W9My5MIkenr5RZDfDGxPiQ0caB9TspKsMPD3mWJ4gWy9RaEICsq9LPInaXjoUxtNUZooNSEOtbmaFP3E4w6GsfU-r6CO5R0-I",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{forohub_auth_server_url}}/oauth2/revoke",
+							"host": [
+								"{{forohub_auth_server_url}}"
+							],
+							"path": [
+								"oauth2",
+								"revoke"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Estos endpoints gestionan la autenticación y autorización de usuarios mediante OAuth2 y JWT.\n\nPermiten iniciar sesión, generar y validar tokens de acceso y actualización, así como manejar la confirmación y recuperación de contraseñas."
+		},
+		{
+			"name": "TOKEN GATEWAY",
+			"item": [
+				{
+					"name": "TOKEN GATEWAY - Exchange Code For Tokens",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"grant_type\": \"authorization_code\",\r\n    \"code\": \"VIgNmqj8C_FVf1wi6KiaxaQT1mDen6ttrr1tN76EBWJlULqd6uJoJo3HWxr5o1plFNLezwc-YM_x5wHKDLQv3pSeV_rBZZKanOOCB1Nw5KKV8DRhhirjNjyxhkImHAn-\",\r\n    \"redirect_uri\": \"https://oauthdebugger.com/debug\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{forohub_token_gateway_url}}/token/exchange",
+							"host": [
+								"{{forohub_token_gateway_url}}"
+							],
+							"path": [
+								"token",
+								"exchange"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TOKEN GATEWAY - Refresh Access Token",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{forohub_token_gateway_url}}/token/refresh",
+							"host": [
+								"{{forohub_token_gateway_url}}"
+							],
+							"path": [
+								"token",
+								"refresh"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TOKEN GATEWAY - Logout",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{forohub_token_gateway_url}}/token/logout",
+							"host": [
+								"{{forohub_token_gateway_url}}"
+							],
+							"path": [
+								"token",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Estos endpoints actúan como intermediarios entre el cliente y el servidor de autenticación.  \n  \nPermiten intercambiar credenciales por tokens, refrescar tokens expirados y cerrar sesión de forma segura."
+		},
+		{
+			"name": "CONTENT ANALYSIS SERVICE",
+			"item": [
+				{
+					"name": "INTERNAL",
+					"item": [
+						{
+							"name": "[INTERNAL] - Validate Content",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"text\": \"Cómo Instalar Java 23\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{forohub_content_analysis_service_url}}/validation/content",
+									"host": [
+										"{{forohub_content_analysis_service_url}}"
+									],
+									"path": [
+										"validation",
+										"content"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "[INTERNAL] - Validate Username",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"text\": \"William Medina\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{forohub_content_analysis_service_url}}/validation/username",
+									"host": [
+										"{{forohub_content_analysis_service_url}}"
+									],
+									"path": [
+										"validation",
+										"username"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"description": "Estos endpoints están destinados exclusivamente para la comunicación interna entre microservicios.  \n  \nNo son accesibles desde el cliente externo ni desde el frontend.  \n  \nSe utilizan para sincronización de datos, validaciones internas y comunicación a través de eventos o peticiones directas entre servicios del ecosistema."
+				}
+			],
+			"description": "Estos endpoints se encargan de analizar y validar el contenido generado por los usuarios utilizando inteligencia artificial.\n\nEvalúan la calidad y validez de los títulos, descripciones, respuestas y nombres de usuario creados o actualizados, garantizando que cumplan con las normas de la plataforma."
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "forohub_auth_server_url",
+			"value": ""
+		},
+		{
+			"key": "forohub_token_gateway_url",
+			"value": ""
+		},
+		{
+			"key": "forohub_api_gateway_url",
+			"value": ""
+		},
+		{
+			"key": "forohub_user_service_url",
+			"value": ""
+		},
+		{
+			"key": "forohub_topic_service_url",
+			"value": ""
+		},
+		{
+			"key": "forohub_reply_service_url",
+			"value": ""
+		},
+		{
+			"key": "forohub_course_service_url",
+			"value": ""
+		},
+		{
+			"key": "forohub_content_analysis_service_url",
+			"value": ""
+		}
+	]
+}

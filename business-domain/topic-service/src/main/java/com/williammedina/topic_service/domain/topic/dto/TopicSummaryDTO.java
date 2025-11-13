@@ -1,0 +1,54 @@
+package com.williammedina.topic_service.domain.topic.dto;
+
+import com.williammedina.topic_service.domain.topic.entity.TopicEntity;
+import com.williammedina.topic_service.domain.topicfollow.entity.TopicFollowEntity;
+import io.swagger.v3.oas.annotations.media.Schema;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+@Schema(description = "Datos resumidos del tópico")
+public record TopicSummaryDTO(
+
+        @Schema(description = "ID del tópico", example = "12")
+        Long id,
+
+        @Schema(description = "ID del curso asociado al tópico", example = "4")
+        Long courseId,
+
+        @Schema(description = "Título del tópico", example = "Error al ejecutar aplicación Spring Boot")
+        String title,
+
+        @Schema(description = "Descripción del tópico", example = "Estoy intentando ejecutar mi aplicación, pero falla al iniciar sin mostrar un mensaje claro.")
+        String description,
+
+        @Schema(description = "Datos del autor del tópico")
+        UserDTO author,
+
+        @Schema(description = "Estado actual del tópico", example = "CLOSED")
+        TopicEntity.Status status,
+
+        @Schema(description = "Lista de ids de los seguidores del tópico")
+        List<Long> followersIds,
+
+        @Schema(description = "Fecha de creación del tópico", example = "2025-05-31T15:45:00")
+        LocalDateTime createdAt,
+
+        @Schema(description = "Fecha de última actualización del tópico", example = "2025-07-01T10:15:00")
+        LocalDateTime updateAt
+) {
+    public static TopicSummaryDTO fromEntity(TopicEntity topic, UserDTO user) {
+        return new TopicSummaryDTO(
+                topic.getId(),
+                topic.getCourseId(),
+                topic.getTitle(),
+                topic.getDescription(),
+                user,
+                topic.getStatus(),
+                topic.getFollowedTopics().stream().map(TopicFollowEntity::getUserId).toList(),
+                topic.getCreatedAt(),
+                topic.getUpdatedAt()
+        );
+    }
+
+}
