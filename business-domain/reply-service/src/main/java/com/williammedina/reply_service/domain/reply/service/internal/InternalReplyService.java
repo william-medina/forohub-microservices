@@ -1,4 +1,4 @@
-package com.williammedina.reply_service.domain.reply.service;
+package com.williammedina.reply_service.domain.reply.service.internal;
 
 import com.williammedina.reply_service.domain.reply.dto.ReplyCountDTO;
 import com.williammedina.reply_service.domain.reply.dto.ReplyDTO;

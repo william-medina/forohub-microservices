@@ -3,7 +3,7 @@ package com.williammedina.reply_service.controller.internal;
 import com.williammedina.reply_service.domain.reply.dto.ReplyCountDTO;
 import com.williammedina.reply_service.domain.reply.dto.ReplyDTO;
 import com.williammedina.reply_service.domain.reply.dto.UserReplyCountDTO;
-import com.williammedina.reply_service.domain.reply.service.InternalReplyService;
+import com.williammedina.reply_service.domain.reply.service.internal.InternalReplyService;
 import com.williammedina.reply_service.infrastructure.exception.ApiErrorResponse;
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Operation;

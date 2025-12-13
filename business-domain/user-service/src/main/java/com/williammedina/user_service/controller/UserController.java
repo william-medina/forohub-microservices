@@ -1,7 +1,9 @@
 package com.williammedina.user_service.controller;
 
 import com.williammedina.user_service.domain.user.dto.*;
-import com.williammedina.user_service.domain.user.service.UserService;
+import com.williammedina.user_service.domain.user.service.account.UserAccountService;
+import com.williammedina.user_service.domain.user.service.profile.UserProfileService;
+import com.williammedina.user_service.domain.user.service.stats.UserStatsService;
 import com.williammedina.user_service.infrastructure.exception.ApiErrorResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -23,7 +25,9 @@ import reactor.core.publisher.Mono;
 @AllArgsConstructor
 public class UserController {
 
-    private final UserService userService;
+    private final UserAccountService userAccountService;
+    private final UserProfileService userProfileService;
+    private final UserStatsService userStatsService;
 
     @Operation(
             summary = "Crear una cuenta de usuario",
@@ -37,8 +41,8 @@ public class UserController {
             }
     )
     @PostMapping("/create-account")
-    public ResponseEntity<Mono<UserDTO>> createAccount(@RequestBody @Valid CreateUserDTO data) {
-        Mono<UserDTO> user = userService.createAccount(data);
+    public ResponseEntity<Mono<UserDTO>> createAccount(@RequestBody @Valid CreateUserDTO request) {
+        Mono<UserDTO> user = userAccountService.createAccount(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(user);
     }
 
@@ -53,7 +57,7 @@ public class UserController {
     )
     @GetMapping("/confirm-account/{token}")
     public ResponseEntity<UserDTO> confirmAccount(@PathVariable String token) {
-        UserDTO user = userService.confirmAccount(token);
+        UserDTO user = userAccountService.confirmAccount(token);
         return ResponseEntity.ok(user);
     }
 
@@ -68,8 +72,8 @@ public class UserController {
             }
     )
     @PostMapping("/request-code")
-    public ResponseEntity<UserDTO> requestConfirmationCode(@RequestBody @Valid EmailUserDTO data) {
-        UserDTO user = userService.requestConfirmationCode(data);
+    public ResponseEntity<UserDTO> requestConfirmationCode(@RequestBody @Valid EmailUserDTO request) {
+        UserDTO user = userAccountService.requestConfirmationCode(request);
         return ResponseEntity.ok(user);
     }
 
@@ -84,8 +88,8 @@ public class UserController {
             }
     )
     @PostMapping("/forgot-password")
-    public ResponseEntity<UserDTO> forgotPassword(@RequestBody @Valid EmailUserDTO data) {
-        UserDTO user = userService.forgotPassword(data);
+    public ResponseEntity<UserDTO> forgotPassword(@RequestBody @Valid EmailUserDTO request) {
+        UserDTO user = userAccountService.forgotPassword(request);
         return ResponseEntity.ok(user);
     }
 
@@ -100,8 +104,8 @@ public class UserController {
             }
     )
     @PostMapping("/update-password/{token}")
-    public ResponseEntity<UserDTO> updatePasswordWithToken(@PathVariable String token, @RequestBody @Valid UpdatePasswordWithTokenDTO data) {
-        UserDTO user = userService.updatePasswordWithToken(token, data);
+    public ResponseEntity<UserDTO> updatePasswordWithToken(@PathVariable String token, @RequestBody @Valid UpdatePasswordWithTokenDTO request) {
+        UserDTO user = userAccountService.updatePasswordWithToken(token, request);
         return ResponseEntity.ok(user);
     }
 
@@ -116,8 +120,8 @@ public class UserController {
             }
     )
     @PatchMapping("/update-password")
-    public ResponseEntity<UserDTO> updateCurrentUserPassword(@RequestHeader("X-User-Id") Long userId, @RequestBody @Valid UpdateCurrentUserPasswordDTO data) {
-        UserDTO user = userService.updateCurrentUserPassword(userId, data);
+    public ResponseEntity<UserDTO> updateCurrentUserPassword(@RequestHeader("X-User-Id") Long userId, @RequestBody @Valid UpdateCurrentUserPasswordDTO request) {
+        UserDTO user = userProfileService.updateCurrentUserPassword(userId, request);
         return ResponseEntity.ok(user);
     }
 
@@ -135,8 +139,8 @@ public class UserController {
             }
     )
     @PatchMapping("/update-username")
-    public ResponseEntity<Mono<UserDTO>> updateUsername(@RequestHeader("X-User-Id") Long userId, @RequestBody @Valid UpdateUsernameDTO data) {
-        Mono<UserDTO> user = userService.updateUsername(userId, data);
+    public ResponseEntity<Mono<UserDTO>> updateUsername(@RequestHeader("X-User-Id") Long userId, @RequestBody @Valid UpdateUsernameDTO request) {
+        Mono<UserDTO> user = userProfileService.updateUsername(userId, request);
         return ResponseEntity.ok(user);
     }
 
@@ -152,7 +156,7 @@ public class UserController {
     )
     @GetMapping("/stats")
     public ResponseEntity<UserStatsDTO> getUserStats(@RequestHeader("X-User-Id") Long userId) {
-        UserStatsDTO userStats = userService.getUserStats(userId);
+        UserStatsDTO userStats = userStatsService.getUserStats(userId);
         return ResponseEntity.ok(userStats);
     }
 
@@ -166,7 +170,7 @@ public class UserController {
     )
     @GetMapping("/me")
     public ResponseEntity<UserDTO> getCurrentUser(@RequestHeader("X-User-Id") Long userId) {
-        UserDTO user = userService.getCurrentUser(userId);
+        UserDTO user = userProfileService.getCurrentUser(userId);
         return ResponseEntity.ok(user);
     }
 

@@ -1,6 +1,5 @@
-package com.williammedina.user_service.domain.user.service;
+package com.williammedina.user_service.domain.user.service.internal;
 
-import com.williammedina.user_service.domain.user.dto.CreateUserDTO;
 import com.williammedina.user_service.domain.user.dto.LoginUserDTO;
 import com.williammedina.user_service.domain.user.dto.UserDTO;
 
@@ -10,5 +9,5 @@ public interface InternalUserService {
 
     UserDTO getUserById(Long userId);
     List<UserDTO> getUsersByIds(List<Long> ids);
-    UserDTO validateCredentials(LoginUserDTO data);
+    UserDTO validateCredentials(LoginUserDTO request);
 }

@@ -1,4 +1,4 @@
-package com.williammedina.topic_service.domain.topicfollow.service;
+package com.williammedina.topic_service.domain.topicfollow.service.internal;
 
 import com.williammedina.topic_service.domain.topicfollow.dto.UserFollowedTopicCountDTO;
 

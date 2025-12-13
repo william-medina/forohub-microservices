@@ -41,8 +41,8 @@ public class ReplyController {
             }
     )
     @PostMapping
-    public ResponseEntity<Mono<ReplyDTO>> createReply(@RequestHeader("X-User-Id") Long userId, @RequestBody @Valid CreateReplyDTO data) {
-        Mono<ReplyDTO> reply = replyService.createReply(userId, data);
+    public ResponseEntity<Mono<ReplyDTO>> createReply(@RequestHeader("X-User-Id") Long userId, @RequestBody @Valid CreateReplyDTO replyRequest) {
+        Mono<ReplyDTO> reply = replyService.createReply(userId, replyRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(reply);
     }
 
@@ -95,10 +95,10 @@ public class ReplyController {
     @PutMapping("/{replyId}")
     public ResponseEntity<Mono<ReplyDTO>> updateReply(
             @RequestHeader("X-User-Id") Long userId,
-            @RequestBody @Valid UpdateReplyDTO data,
+            @RequestBody @Valid UpdateReplyDTO replyRequest,
             @PathVariable Long replyId
     ) {
-        Mono<ReplyDTO> reply = replyService.updateReply(userId, data, replyId);
+        Mono<ReplyDTO> reply = replyService.updateReply(userId, replyRequest, replyId);
         return ResponseEntity.ok(reply);
     }
 

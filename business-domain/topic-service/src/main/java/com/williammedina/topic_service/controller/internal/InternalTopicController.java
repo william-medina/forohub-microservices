@@ -4,9 +4,9 @@ import com.williammedina.topic_service.domain.topic.dto.InputTopicStatusDTO;
 import com.williammedina.topic_service.domain.topic.dto.TopicDetailsDTO;
 import com.williammedina.topic_service.domain.topic.dto.TopicSummaryDTO;
 import com.williammedina.topic_service.domain.topic.dto.UserTopicCountDTO;
-import com.williammedina.topic_service.domain.topic.service.InternalTopicService;
+import com.williammedina.topic_service.domain.topic.service.internal.InternalTopicService;
 import com.williammedina.topic_service.domain.topicfollow.dto.UserFollowedTopicCountDTO;
-import com.williammedina.topic_service.domain.topicfollow.service.InternalTopicFollowService;
+import com.williammedina.topic_service.domain.topicfollow.service.internal.InternalTopicFollowService;
 import com.williammedina.topic_service.infrastructure.exception.ApiErrorResponse;
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Operation;
@@ -41,8 +41,8 @@ public class InternalTopicController {
             }
     )
     @PostMapping("/{topicId}/status")
-    public ResponseEntity<TopicDetailsDTO> changeTopicStatus(@PathVariable Long topicId, @RequestBody @Valid InputTopicStatusDTO data) {
-        TopicDetailsDTO topic = topicService.changeTopicStatus(data, topicId);
+    public ResponseEntity<TopicDetailsDTO> changeTopicStatus(@PathVariable Long topicId, @RequestBody @Valid InputTopicStatusDTO topicRequest) {
+        TopicDetailsDTO topic = topicService.changeTopicStatus(topicRequest, topicId);
         return ResponseEntity.ok(topic);
     }
 

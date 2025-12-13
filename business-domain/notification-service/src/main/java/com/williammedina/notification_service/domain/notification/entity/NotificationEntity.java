@@ -65,6 +65,10 @@ public class NotificationEntity {
         this.subtype = subtype;
     }
 
+    public void markAsRead() {
+        this.isRead = true;
+    }
+
     public enum Type {
         TOPIC,
         REPLY

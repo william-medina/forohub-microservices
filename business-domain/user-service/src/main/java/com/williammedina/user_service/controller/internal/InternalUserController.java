@@ -2,7 +2,7 @@ package com.williammedina.user_service.controller.internal;
 
 import com.williammedina.user_service.domain.user.dto.LoginUserDTO;
 import com.williammedina.user_service.domain.user.dto.UserDTO;
-import com.williammedina.user_service.domain.user.service.InternalUserService;
+import com.williammedina.user_service.domain.user.service.internal.InternalUserService;
 import com.williammedina.user_service.infrastructure.exception.ApiErrorResponse;
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Operation;
@@ -62,8 +62,8 @@ public class InternalUserController {
             }
     )
     @PostMapping("/validate-credentials")
-    public ResponseEntity<UserDTO> validateCredentials(@RequestBody LoginUserDTO data) {
-        UserDTO user = userService.validateCredentials(data);
+    public ResponseEntity<UserDTO> validateCredentials(@RequestBody LoginUserDTO request) {
+        UserDTO user = userService.validateCredentials(request);
         return ResponseEntity.ok(user);
     }
 }

@@ -44,8 +44,8 @@ public class TopicController {
             }
     )
     @PostMapping
-    public ResponseEntity<Mono<TopicDTO>> createTopic(@RequestHeader("X-User-Id") Long userId, @RequestBody @Valid InputTopicDTO data) {
-        Mono<TopicDTO> topic = topicService.createTopic(userId, data);
+    public ResponseEntity<Mono<TopicDTO>> createTopic(@RequestHeader("X-User-Id") Long userId, @RequestBody @Valid InputTopicDTO topicRequest) {
+        Mono<TopicDTO> topic = topicService.createTopic(userId, topicRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(topic);
     }
 
@@ -120,8 +120,8 @@ public class TopicController {
             }
     )
     @PutMapping("/{topicId}")
-    public ResponseEntity<Mono<TopicDetailsDTO>> updateTopic(@RequestHeader("X-User-Id") Long userId, @RequestBody @Valid InputTopicDTO data, @PathVariable Long topicId) {
-        Mono<TopicDetailsDTO> topic = topicService.updateTopic(userId, data, topicId);
+    public ResponseEntity<Mono<TopicDetailsDTO>> updateTopic(@RequestHeader("X-User-Id") Long userId, @RequestBody @Valid InputTopicDTO topicRequest, @PathVariable Long topicId) {
+        Mono<TopicDetailsDTO> topic = topicService.updateTopic(userId, topicRequest, topicId);
         return ResponseEntity.ok(topic);
     }
 

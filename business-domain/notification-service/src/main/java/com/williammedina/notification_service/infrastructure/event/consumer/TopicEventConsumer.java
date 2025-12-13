@@ -2,10 +2,8 @@ package com.williammedina.notification_service.infrastructure.event.consumer;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.williammedina.notification_service.domain.notification.service.NotificationService;
-import com.williammedina.notification_service.domain.notification.dto.TopicDetailsDTO;
+import com.williammedina.notification_service.domain.notification.service.handler.DomainEventHandler;
 import com.williammedina.notification_service.infrastructure.event.model.topic.TopicEvent;
-import com.williammedina.notification_service.infrastructure.event.model.topic.TopicPayload;
 import com.williammedina.notification_service.infrastructure.persistence.processedevent.ProcessedEventEntity;
 import com.williammedina.notification_service.infrastructure.persistence.processedevent.ProcessedEventRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +17,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class TopicEventConsumer {
 
-    private final NotificationService notificationService;
+    private final DomainEventHandler<TopicEvent> topicEventHandler;
     private final ProcessedEventRepository processedEventRepository;
     private final ObjectMapper objectMapper;
 
@@ -39,33 +37,7 @@ public class TopicEventConsumer {
                 return;
             }
 
-            TopicPayload payload = objectMapper.convertValue(event.payload(), TopicPayload.class);
-            TopicDetailsDTO topic = payload.topic();
-            Long userId = payload.userId();
-
-            boolean isNotTopicAuthor = !userId.equals(topic.author().id());
-
-            switch (event.eventType()) {
-                case UPDATED -> {
-                    if(isNotTopicAuthor) {
-                        log.info("Notifying topic owner ID: {} about update", topic.id());
-                        notificationService.notifyTopicEdited(topic);
-                    }
-                }
-                case STATUS_CHANGED -> {
-                    if (topic.status().equals(TopicDetailsDTO.Status.CLOSED)) {
-                        log.info("Sending notifications for topic marked as solved");
-                        notificationService.notifyTopicSolved(topic);
-                        notificationService.notifyFollowersTopicSolved(topic);
-                    }
-                }
-                case DELETED -> {
-                    if(isNotTopicAuthor) {
-                        log.info("Notifying topic owner ID: {} about deletion", topic.id());
-                        notificationService.notifyTopicDeleted(topic);
-                    }
-                }
-            }
+            topicEventHandler.handle(event);
 
             processedEventRepository.save(new ProcessedEventEntity(
                     event.eventId(),

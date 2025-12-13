@@ -5,13 +5,12 @@ import com.williammedina.topic_read_service.domain.topicread.dto.TopicDTO;
 import com.williammedina.topic_read_service.domain.topicread.dto.TopicDetailsDTO;
 import com.williammedina.topic_read_service.domain.topicread.dto.TopicFollowDetailsDTO;
 import com.williammedina.topic_read_service.domain.topicread.repository.TopicReadRepository;
-import com.williammedina.topic_read_service.infrastructure.exception.AppException;
+import com.williammedina.topic_read_service.domain.topicread.service.finder.TopicReadFinder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,6 +22,7 @@ import java.util.List;
 public class TopicReadServiceImpl implements TopicReadService {
 
     private final TopicReadRepository topicReadRepository;
+    private final TopicReadFinder topicReadFinder;
 
     @Override
     public Page<TopicDTO> getAllTopics(Pageable pageable, Long courseId, String keyword, TopicReadDocument.Status status) {
@@ -58,7 +58,7 @@ public class TopicReadServiceImpl implements TopicReadService {
     @Override
     public TopicDetailsDTO getTopicById(Long topicId) {
         log.info("Fetching topic details with ID: {}", topicId);
-        TopicReadDocument topic = findTopicById(topicId);
+        TopicReadDocument topic = topicReadFinder.findTopicById(topicId);
         return TopicDetailsDTO.fromDocument(topic);
     }
 
@@ -75,13 +75,5 @@ public class TopicReadServiceImpl implements TopicReadService {
 
         List<TopicFollowDetailsDTO> topicFollowerDTOs = topicsPage.getContent().stream().map(topic -> TopicFollowDetailsDTO.fromTopicReadDocument(userId, topic)).toList();
         return new PageImpl<>(topicFollowerDTOs, pageable, topicsPage.getTotalElements());
-    }
-
-    public TopicReadDocument findTopicById(Long topicId) {
-        return topicReadRepository.findById(topicId)
-                .orElseThrow(() -> {
-                    log.warn("Topic not found with ID: {}", topicId);
-                    return new AppException("Tópico no encontrado", HttpStatus.NOT_FOUND);
-                });
     }
 }
