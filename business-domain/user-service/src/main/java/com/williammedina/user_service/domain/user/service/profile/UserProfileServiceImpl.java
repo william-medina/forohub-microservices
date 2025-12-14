@@ -36,8 +36,8 @@ public class UserProfileServiceImpl implements UserProfileService {
     @Transactional
     public UserDTO updateCurrentUserPassword(Long userId, UpdateCurrentUserPasswordDTO request) {
         UserEntity currentUser = userFinder.findUserById(userId);
-        validator.validatePasswordsMatch(request.password(), request.password_confirmation());
-        validator.validateCurrentPassword(currentUser, request.current_password());
+        validator.ensurePasswordsMatch(request.password(), request.password_confirmation());
+        validator.ensureCurrentPasswordIsValid(currentUser, request.current_password());
 
         currentUser.setPassword(passwordEncoder.encode(request.password()));
         userRepository.save(currentUser);
@@ -51,14 +51,14 @@ public class UserProfileServiceImpl implements UserProfileService {
     public Mono<UserDTO> updateUsername(Long userId, UpdateUsernameDTO request) {
         UserEntity currentUser = userFinder.findUserById(userId);
 
-        validator.ensureNewUsername(currentUser, request.username());
-        validator.existsByUsername(request.username());
+        validator.ensureUsernameIsDifferent(currentUser, request.username());
+        validator.ensureUsernameIsUnique(request.username());
 
         return contentValidationClient.validateUsername(request.username())
                 .publishOn(Schedulers.boundedElastic())
                 .map(contentResult -> {
 
-                    validator.validateUsernameContent(contentResult); // Validate the new username using AI
+                    validator.ensureUsernameContentIsValid(contentResult); // Validate the new username using AI
                     currentUser.setUsername(request.username());
                     UserEntity userUpdated = userRepository.save(currentUser);
 

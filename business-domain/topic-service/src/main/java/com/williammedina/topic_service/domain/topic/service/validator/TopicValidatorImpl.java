@@ -16,7 +16,7 @@ public class TopicValidatorImpl implements TopicValidator {
     private final TopicRepository topicRepository;
 
     @Override
-    public void existsByTitle(String title) {
+    public void ensureTitleIsUnique(String title) {
         if (topicRepository.existsByTitleAndIsDeletedFalse(title)) {
             log.warn("A topic already exists with title: {}", title);
             throw new AppException("El titulo ya existe.", HttpStatus.CONFLICT);
@@ -24,7 +24,7 @@ public class TopicValidatorImpl implements TopicValidator {
     }
 
     @Override
-    public void existsByDescription(String description) {
+    public void ensureDescriptionIsUnique(String description) {
         if (topicRepository.existsByDescriptionAndIsDeletedFalse(description)) {
             log.warn("A topic already exists with description: {}", description);
             throw new AppException("La descripción ya existe.", HttpStatus.CONFLICT);
@@ -32,7 +32,7 @@ public class TopicValidatorImpl implements TopicValidator {
     }
 
     @Override
-    public void validateTitleContent(ContentValidationResponse validationResponse) {
+    public void ensureTitleContentIsValid(ContentValidationResponse validationResponse) {
         if (!"approved".equals(validationResponse.result())) {
             log.warn("Title content not approved: {}", validationResponse.result());
             throw new AppException("El título " + validationResponse.result(), HttpStatus.FORBIDDEN);
@@ -40,7 +40,7 @@ public class TopicValidatorImpl implements TopicValidator {
     }
 
     @Override
-    public void validateDescriptionContent(ContentValidationResponse validationResponse) {
+    public void ensureDescriptionContentIsValid(ContentValidationResponse validationResponse) {
         if (!"approved".equals(validationResponse.result())) {
             log.warn("Description content not approved: {}", validationResponse.result());
             throw new AppException("La descripción " + validationResponse.result(), HttpStatus.FORBIDDEN);

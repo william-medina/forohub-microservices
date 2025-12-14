@@ -51,8 +51,8 @@ public class TopicServiceImpl implements TopicService {
         CourseDTO course = courseServiceClient.getCourseById(topicRequest.courseId());
         log.info("Creating topic by user ID: {}", currentUser.id());
 
-        validator.existsByTitle(topicRequest.title());
-        validator.existsByDescription(topicRequest.description());
+        validator.ensureTitleIsUnique(topicRequest.title());
+        validator.ensureDescriptionIsUnique(topicRequest.description());
 
         Mono<ContentValidationResponse> titleValidation = contentValidationClient.validateContent(topicRequest.title());
         Mono<ContentValidationResponse> descriptionValidation = contentValidationClient.validateContent(topicRequest.description());
@@ -64,8 +64,8 @@ public class TopicServiceImpl implements TopicService {
                     ContentValidationResponse descResult = validationResults.getT2();
 
                     // Validate the title and description content using AI
-                    validator.validateTitleContent(titleResult);
-                    validator.validateDescriptionContent(descResult);
+                    validator.ensureTitleContentIsValid(titleResult);
+                    validator.ensureDescriptionContentIsValid(descResult);
 
                     TopicEntity createdTopic = topicRepository.save(new TopicEntity(currentUser.id(), topicRequest.title(), topicRequest.description(), course.id()));
 
@@ -137,12 +137,12 @@ public class TopicServiceImpl implements TopicService {
         Mono<ContentValidationResponse> descriptionValidation = Mono.just(new ContentValidationResponse("approved"));
 
         if (!topicRequest.title().equals(topicToUpdate.getTitle())) {
-            validator.existsByTitle(topicRequest.title());
+            validator.ensureTitleIsUnique(topicRequest.title());
             titleValidation = contentValidationClient.validateContent(topicRequest.title());
         }
 
         if (!topicRequest.description().equals(topicToUpdate.getDescription())) {
-            validator.existsByDescription(topicRequest.description());
+            validator.ensureDescriptionIsUnique(topicRequest.description());
             descriptionValidation = contentValidationClient.validateContent(topicRequest.description());
         }
 
@@ -154,8 +154,8 @@ public class TopicServiceImpl implements TopicService {
                     ContentValidationResponse descResult = validationResults.getT2();
 
                     // Validate the new title and description content using AI
-                    validator.validateTitleContent(titleResult);
-                    validator.validateDescriptionContent(descResult);
+                    validator.ensureTitleContentIsValid(titleResult);
+                    validator.ensureDescriptionContentIsValid(descResult);
 
                     topicToUpdate.setTitle(topicRequest.title());
                     topicToUpdate.setDescription(topicRequest.description());

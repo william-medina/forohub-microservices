@@ -50,12 +50,12 @@ public class ReplyServiceImpl implements ReplyService {
         CourseDTO course = courseServiceClient.getCourseById(topic.courseId());
         log.info("User ID: {} creating reply for topic ID: {}", currentUser.id(), topic.id());
 
-        validator.checkTopicClosed(topic);
+        validator.ensureTopicIsOpen(topic);
 
         return contentValidationClient.validateContent(data.content())
                 .publishOn(Schedulers.boundedElastic())
                 .map(contentResult -> {
-                    validator.validateReplyContent(contentResult); // Validate the reply content using AI
+                    validator.ensureReplyContentIsValid(contentResult); // Validate the reply content using AI
 
                     ReplyEntity newReply = replyRepository.save(new ReplyEntity(currentUser.id(), topic.id(), data.content()));
                     log.info("Reply created with ID: {} by user ID: {}", newReply.getId(), currentUser.id());
@@ -91,7 +91,7 @@ public class ReplyServiceImpl implements ReplyService {
             .publishOn(Schedulers.boundedElastic())
             .map(contentResult -> {
 
-                validator.validateReplyContent(contentResult); // Validate the updated reply content using AI
+                validator.ensureReplyContentIsValid(contentResult); // Validate the updated reply content using AI
 
                 replyToUpdate.setContent(data.content());
                 ReplyEntity updatedReply = replyRepository.save(replyToUpdate);

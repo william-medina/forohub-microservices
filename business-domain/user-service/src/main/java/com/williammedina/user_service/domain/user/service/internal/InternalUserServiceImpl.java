@@ -42,7 +42,7 @@ public class InternalUserServiceImpl implements InternalUserService {
     @Transactional(readOnly = true)
     public UserDTO validateCredentials(LoginUserDTO request) {
         UserEntity user = userFinder.findUserByEmailOrUsername(request.username(), request.username());
-        validator.validateCurrentPassword(user, request.password());
+        validator.ensureCurrentPasswordIsValid(user, request.password());
         return UserDTO.fromEntity(user);
     }
 }

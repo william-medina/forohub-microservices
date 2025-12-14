@@ -4,9 +4,9 @@ import com.williammedina.topic_service.domain.topic.dto.ContentValidationRespons
 
 public interface TopicValidator {
 
-    void existsByTitle(String title);
-    void existsByDescription(String description);
-    void validateTitleContent(ContentValidationResponse validationResponse);
-    void validateDescriptionContent(ContentValidationResponse validationResponse);
+    void ensureTitleIsUnique(String title);
+    void ensureDescriptionIsUnique(String description);
+    void ensureTitleContentIsValid(ContentValidationResponse validationResponse);
+    void ensureDescriptionContentIsValid(ContentValidationResponse validationResponse);
 
 }
