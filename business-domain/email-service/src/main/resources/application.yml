@@ -50,6 +50,7 @@ spring:
             enable: true
 
 email:
+  from: ${EMAIL_FROM}
   enabled: ${EMAIL_ENABLED:true}
 
 eureka:
